@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"github.com/xuehu96/xgtcp/pkg/logger"
 	"github.com/xuehu96/xgtcp/server"
 	"log"
 	"net"
@@ -23,7 +24,7 @@ func main() {
 	// 创建TCP服务实例
 	s := server.New(
 		server.WithListener(ln),
-		server.WithDebugLogger(),
+		server.WithLogger(logger.DebugLogger()),
 	)
 
 	// Ctrl-C 结束

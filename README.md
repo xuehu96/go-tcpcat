@@ -126,7 +126,7 @@ func main() {
 	s := server.New(
 		server.WithHook(hooks),
 		server.WithListener(ln),
-		server.WithDebugLogger(),
+		server.WithLogger(logger.DebugLogger()),
 	)
 
 	// 添加功能码对应的处理函数 类似于HTTP的路由
