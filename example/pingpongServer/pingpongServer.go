@@ -54,14 +54,14 @@ func main() {
 	)
 
 	// 添加功能码对应的处理函数 类似于HTTP的路由
-	s.AddFn("p", func(c *server.Client, code string, buf []byte, len int) {
+	s.AddFn("p", func(c *server.Client, code string, data []byte) {
 		c.ReplyData([]byte("pong"))
 	})
-	s.AddFn("t", func(c *server.Client, code string, buf []byte, len int) {
+	s.AddFn("t", func(c *server.Client, code string, data []byte) {
 		currentTime := time.Now()
 		c.ReplyData([]byte(currentTime.Format("2006-01-02 15:04:05.000000000")))
 	})
-	s.AddFn("x", func(c *server.Client, code string, buf []byte, len int) {
+	s.AddFn("x", func(c *server.Client, code string, data []byte) {
 		c.Close()
 	})
 

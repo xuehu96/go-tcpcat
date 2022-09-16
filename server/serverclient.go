@@ -15,6 +15,7 @@ func NewClient(s *Server, conn net.Conn, id int64) *Client {
 		id:   id,
 		s:    s,
 		conn: conn,
+		buf:  make([]byte, s.bufLen),
 		mu:   sync.RWMutex{},
 	}
 	c.key = conn.RemoteAddr().String()
@@ -53,6 +54,8 @@ func (c *Client) Start() {
 
 		c.conn.Close()
 		c.closed = true
+		c.buf = nil
+		c.conn = nil
 
 		// 删除s中的c
 		c.s.mu.Lock()
@@ -77,30 +80,29 @@ func (c *Client) ClientReader() {
 		default:
 			// 1. 循环接收数据
 			reader := bufio.NewReader(c.conn)
-			buf := make([]byte, c.s.bufLen)
-			n, err := reader.Read(buf[:])
+			n, err := reader.Read(c.buf[:])
 			if err != nil {
 				log.Debug("Client read err (close)", zap.Error(err))
 				return
 			}
-			ok := c.s.hooks.OnReadData(c, buf, n)
+			ok := c.s.hooks.OnReadData(c, c.buf[:n])
 			if !ok {
 				continue
 			}
 			// 2. 获取功能码
-			fnc := c.s.hooks.OnFnCode(buf)
+			fnc := c.s.hooks.OnFnCode(c.buf[:n])
 			if fnc == "" {
-				go defaultFn(c, fnc, buf, n)
+				go defaultFn(c, fnc, c.buf[:n])
 				continue
 			}
 			// 3. 根据功能码 回调处理函数
 			fn, ok := c.s.fns[fnc]
 			if ok {
 				//调用对应功能码的处理函数
-				go fn(c, fnc, buf, n)
+				go fn(c, fnc, c.buf[:n])
 			} else {
 				//调用默认处理函数
-				go defaultFn(c, fnc, buf, n)
+				go defaultFn(c, fnc, c.buf[:n])
 			}
 
 		} // end select

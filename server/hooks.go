@@ -21,7 +21,7 @@ type OnAccept func(c *Client) bool
 
 // OnReadData 接收到客户端数据调用
 // 返回true 继续处理数据， 返回false 丢弃数据 可以做数据包格式校验，格式不对的丢掉
-type OnReadData func(c *Client, buf []byte, len int) bool
+type OnReadData func(c *Client, buf []byte) bool
 
 // OnFnCode 从接收到的数据解析出功能代码
 type OnFnCode func(buf []byte) string
@@ -53,8 +53,8 @@ func defaultOnAccept(c *Client) bool {
 
 // defaultOnReadData 默认的OnReadData函数
 // 返回true 继续处理数据， 返回false 丢弃数据 可以做数据包格式校验，格式不对的丢掉
-func defaultOnReadData(c *Client, buf []byte, len int) bool {
-	log.Debug("read success", zap.ByteString("data", buf[:len]), zap.Int("len", len))
+func defaultOnReadData(c *Client, buf []byte) bool {
+	log.Debug("read success", zap.ByteString("data", buf), zap.Int("len", len(buf)))
 	return true
 }
 

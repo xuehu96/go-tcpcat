@@ -28,6 +28,7 @@ type Client struct {
 	id     int64
 	key    string
 	closed bool
+	buf    []byte
 	s      *Server
 	conn   net.Conn
 	mu     sync.RWMutex
