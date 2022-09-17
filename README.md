@@ -15,7 +15,7 @@ HTTP协议有URL，MQTT协议有topic，而TCP协议通常使用私有协议，x
 | OnListen   | Listen成功后回调         | 程序启动 New资源                                             |
 | OnAccept   | 新客户端连接调用         | 判断客户端来源，限制客户端数量                               |
 | OnReadData | 接收到客户端数据调用     | 判断数据格式，去头尾等                                       |
-| OnFnCode   | 从数据中解析出功能码     | [*功能码和自定义功能处理函数*](#2.功能码和自定义功能处理函数) |
+| OnFnCode   | 从数据中解析出功能码     | [*功能码和自定义功能处理函数*](https://github.com/xuehu96/xgtcp#2功能码和自定义功能处理函数) |
 | OnSendData | 向客户端发送数据后调用   | 判断是否发送成功，重发或通知调用方                           |
 | OnClose    | 客户端主动或被断开后调用 | 断开后通知或标记客户端离线                                   |
 | OnStop     | Listen关闭后调用         | 清理资源                                                     |
@@ -86,6 +86,7 @@ package main
 
 import (
 	"context"
+	"github.com/xuehu96/xgtcp/pkg/logger"
 	"github.com/xuehu96/xgtcp/server"
 	"log"
 	"net"
@@ -130,14 +131,14 @@ func main() {
 	)
 
 	// 添加功能码对应的处理函数 类似于HTTP的路由
-	s.AddFn("p", func(c *server.Client, code string, buf []byte, len int) {
+	s.AddFn("p", func(c *server.Client, code string, data []byte) {
 		c.ReplyData([]byte("pong"))
 	})
-	s.AddFn("t", func(c *server.Client, code string, buf []byte, len int) {
+	s.AddFn("t", func(c *server.Client, code string, data []byte) {
 		currentTime := time.Now()
 		c.ReplyData([]byte(currentTime.Format("2006-01-02 15:04:05.000000000")))
 	})
-	s.AddFn("x", func(c *server.Client, code string, buf []byte, len int) {
+	s.AddFn("x", func(c *server.Client, code string, data []byte) {
 		c.Close()
 	})
 
@@ -152,6 +153,5 @@ func main() {
 	// TCP服务器开始干活
 	s.Serve()
 }
-
 ```
 
