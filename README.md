@@ -1,8 +1,18 @@
 # go-tcpcat
 
-TCP服务器常用于物联网、游戏服务器；  
-HTTP协议有URL，MQTT协议有topic，而TCP协议通常使用私有协议，go-tcpcat为开发框架，通过hooks的方式，将私有协议的解析程序注入框架。
+[ENGLISH](./README_EN.md)
 
+TCP常应用于物联网数据服务器、游戏服务器等，且通常都是私有格式协议；  
+go-tcpcat只需很少的代码就可以实现TCP透传、消息处理功能；  
+消息处理支持`Go语言`Hook将私有协议的解析程序注入框架、`Lua`脚本处理、`Python`GRPC调用处理、`HTTP`回调处理、`Redis`缓存数据等。
+
+### 0. Plugin TODO
+- [ ] Lua语言处理TCP数据 (/plugin/lua /plugin/lua)
+- [ ] (Python调用)GRPC处理TCP数据 (/plugin/grpc /example/python)
+- [ ] HTTP回调方式处理TCP数据 (...)
+- [ ] Redis缓存TCP数据 (...)
+- [ ] Auth连接鉴权 (...)
+- [ ] Admin管理页面 (...)
 
 ### 1.狗子函数(Hooks)
 狗子函数就是回调函数，指定事件发生后，框架会回调提前注入的处理函数，
