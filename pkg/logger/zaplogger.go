@@ -9,7 +9,7 @@ import (
 
 func DebugLogger() *zap.Logger {
 	lumberJackLogger := &lumberjack.Logger{
-		Filename:   "debug.log",
+		Filename:   "go-tcpcat-debug.log",
 		LocalTime:  true,
 		MaxSize:    16, //M
 		MaxBackups: 0,  //个
@@ -39,9 +39,9 @@ func DebugLogger() *zap.Logger {
 
 func ProductionLogger() *zap.Logger {
 	// 1. writeSyncer循环文件
-	os.Mkdir("log", os.ModePerm)
+	_ = os.Mkdir("log", os.ModePerm)
 	lumberJackLogger := &lumberjack.Logger{
-		Filename:   "./log/xgtcp.log",
+		Filename:   "./log/go-tcpcat.log",
 		LocalTime:  true,
 		MaxSize:    128, //M
 		MaxBackups: 10,  //个

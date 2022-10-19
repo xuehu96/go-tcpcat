@@ -1,7 +1,7 @@
-# xgtcp 
+# go-tcpcat
 
 TCP服务器常用于物联网、游戏服务器；  
-HTTP协议有URL，MQTT协议有topic，而TCP协议通常使用私有协议，xgtcp为开发框架，通过hooks的方式，将私有协议的解析程序注入框架。
+HTTP协议有URL，MQTT协议有topic，而TCP协议通常使用私有协议，go-tcpcat为开发框架，通过hooks的方式，将私有协议的解析程序注入框架。
 
 
 ### 1.狗子函数(Hooks)
@@ -10,15 +10,15 @@ HTTP协议有URL，MQTT协议有topic，而TCP协议通常使用私有协议，x
 
 程序设置了以下狗子函数：
 
-| Hook       | 调用时机                 | 用途示例                                                     |
-| ---------- | :----------------------- | ------------------------------------------------------------ |
-| OnListen   | Listen成功后回调         | 程序启动 New资源                                             |
-| OnAccept   | 新客户端连接调用         | 判断客户端来源，限制客户端数量                               |
-| OnReadData | 接收到客户端数据调用     | 判断数据格式，去头尾等                                       |
-| OnFnCode   | 从数据中解析出功能码     | [*功能码和自定义功能处理函数*](https://github.com/xuehu96/xgtcp#2功能码和自定义功能处理函数) |
-| OnSendData | 向客户端发送数据后调用   | 判断是否发送成功，重发或通知调用方                           |
-| OnClose    | 客户端主动或被断开后调用 | 断开后通知或标记客户端离线                                   |
-| OnStop     | Listen关闭后调用         | 清理资源                                                     |
+| Hook       | 调用时机                 | 用途示例                               |
+| ---------- | :----------------------- |------------------------------------|
+| OnListen   | Listen成功后回调         | 程序启动 New资源                         |
+| OnAccept   | 新客户端连接调用         | 判断客户端来源，限制客户端数量                    |
+| OnReadData | 接收到客户端数据调用     | 判断数据格式，去头尾等                        |
+| OnFnCode   | 从数据中解析出功能码     | [*功能码和自定义功能处理函数*](#2功能码和自定义功能处理函数) |
+| OnSendData | 向客户端发送数据后调用   | 判断是否发送成功，重发或通知调用方                  |
+| OnClose    | 客户端主动或被断开后调用 | 断开后通知或标记客户端离线                      |
+| OnStop     | Listen关闭后调用         | 清理资源                               |
 
 狗子使用方法：
 ```go
@@ -86,8 +86,8 @@ package main
 
 import (
 	"context"
-	"github.com/xuehu96/xgtcp/pkg/logger"
-	"github.com/xuehu96/xgtcp/server"
+	"github.com/xuehu96/go-tcpcat/pkg/logger"
+	"github.com/xuehu96/go-tcpcat/server"
 	"log"
 	"net"
 	"os"
@@ -96,6 +96,7 @@ import (
 	"syscall"
 	"time"
 )
+
 
 func main() {
 	// 创建TCPListener
@@ -153,5 +154,6 @@ func main() {
 	// TCP服务器开始干活
 	s.Serve()
 }
+
 ```
 

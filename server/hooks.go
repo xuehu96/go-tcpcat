@@ -39,7 +39,7 @@ type OnStop func()
 
 // defaultOnListen 默认的OnListen函数
 func defaultOnListen(s *Server) {
-	log.Info("xgtcp Server start listening...",
+	log.Info("go-tcpcat server start listening...",
 		zap.String("tcp", s.ln.Addr().String()),
 		zap.Int("buf_len", s.bufLen))
 	return

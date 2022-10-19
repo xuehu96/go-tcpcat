@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"github.com/xuehu96/xgtcp/pkg/logger"
-	"github.com/xuehu96/xgtcp/server"
+	"github.com/xuehu96/go-tcpcat/pkg/logger"
+	"github.com/xuehu96/go-tcpcat/server"
 	"log"
 	"net"
 	"os"

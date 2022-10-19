@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 	"github.com/pkg/errors"
-	"github.com/xuehu96/xgtcp/pkg/snowflake"
+	"github.com/xuehu96/go-tcpcat/pkg/snowflake"
 	"go.uber.org/zap"
 	"net"
 	"sync"
@@ -23,7 +23,7 @@ func (s *Server) Serve() {
 		conn, err := s.ln.Accept()
 		if err != nil {
 			if errors.Is(err, net.ErrClosed) {
-				log.Info("xgtcp server stop listening")
+				log.Info("go-tcpcat server stop listening")
 				return
 			}
 			zap.L().Error("Accept failed", zap.Error(err))

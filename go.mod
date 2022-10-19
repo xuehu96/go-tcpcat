@@ -1,4 +1,4 @@
-module github.com/xuehu96/xgtcp
+module github.com/xuehu96/go-tcpcat
 
 go 1.19
 
